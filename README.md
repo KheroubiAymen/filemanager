@@ -6,80 +6,80 @@
 ![Vue.js](https://img.shields.io/badge/Vue.js-3.0-4FC08D.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-Un gestionnaire de fichiers sécurisé permettant aux utilisateurs authentifiés de gérer leurs propres fichiers via une interface moderne et intuitive.
+A secure file manager allowing authenticated users to manage their own files through a modern and intuitive interface.
 
-## 📋 Fonctionnalités
+## 📋 Features
 
-- **Authentification sécurisée** : Inscription, connexion et gestion de profil utilisateur
-- **Isolation des fichiers** : Chaque utilisateur ne peut accéder qu'à ses propres fichiers
-- **Upload de fichiers** : Support pour PDF, DOCX, PNG, JPG, ODT avec limite de taille
-- **Gestion complète** : Liste, recherche, tri, filtrage, téléchargement et suppression de fichiers
+- **Secure Authentication**: Registration, login, and user profile management
+- **File Isolation**: Each user can only access their own files
+- **File Upload**: Support for PDF, DOCX, PNG, JPG, ODT with size limits
+- **Complete Management**: List, search, sort, filter, download, and delete files
 
 ## 🚀 Installation
 
-### Prérequis
-- [Docker](https://www.docker.com/products/docker-desktop/) (avec Docker Compose)
+### Prerequisites
+- [Docker](https://www.docker.com/products/docker-desktop/) (with Docker Compose)
 
-### Étapes d'installation
+### Installation Steps
 
-1. **Clonez le dépôt**
+1. **Clone the repository**
    ```bash
    git clone https://github.com/KheroubiAymen/filemanager.git
    cd filemanager
    ```
 
-2. **Configurez le fichier d'environnement**
+2. **Configure the environment file**
    ```bash
-   # Copiez le fichier d'exemple
+   # Copy the example file
    cp .env.example .env
    
-   # Modifiez les paramètres si nécessaire, notamment:
+   # Modify parameters if necessary, particularly:
    # - DB_HOST=db
    # - DB_DATABASE=filemanager
    # - DB_USERNAME=filemanager
    # - DB_PASSWORD=filemanager
    ```
 
-3. **Lancez les conteneurs Docker**
+3. **Launch Docker containers**
    ```bash
    docker-compose up -d
    ```
 
-4. **Suivez les logs pour attendre la fin de la configuration**
+4. **Follow the logs to wait for the configuration to complete**
    ```bash
    docker-compose logs -f
    ```
-   Le conteneur exécute de nombreuses tâches d'initialisation:
-   - Installation des dépendances PHP (Composer)
-   - Installation des dépendances JavaScript (npm)
-   - Compilation des assets (npm run build)
-   - Création du lien symbolique pour le stockage
-   - Génération de la clé d'application
-   - Exécution des migrations de base de données
-   - Mise en cache de la configuration et des routes
+   The container performs many initialization tasks:
+   - Installation of PHP dependencies (Composer)
+   - Installation of JavaScript dependencies (npm)
+   - Compilation of assets (npm run build)
+   - Creation of storage symbolic link
+   - Application key generation
+   - Database migration execution
+   - Configuration and route caching
    
-   Attendez de voir "Apache/2.4.x (Debian) PHP/8.1.x configured -- resuming normal operations" dans les logs, ce qui indique que l'application est prête.
+   Wait until you see "Apache/2.4.x (Debian) PHP/8.1.x configured -- resuming normal operations" in the logs, which indicates that the application is ready.
 
-5. **Accédez à l'application**
+5. **Access the application**
    ```
    http://localhost:8080
    ```
-   Si vous avez configuré un port différent dans docker-compose.yml, utilisez-le à la place de 8080.
+   If you configured a different port in docker-compose.yml, use it instead of 8080.
 
-### Dépannage
+### Troubleshooting
 
-- **Si le port 8080 est déjà utilisé**, modifiez le port dans docker-compose.yml:
+- **If port 8080 is already in use**, modify the port in docker-compose.yml:
   ```yaml
   ports:
-    - "8081:80"  # Changez 8080 pour un autre port disponible
+    - "8081:80"  # Change 8080 to another available port
   ```
 
-- **Si l'initialisation échoue**, vous pouvez exécuter les commandes manuellement:
+- **If initialization fails**, you can run the commands manually:
   ```bash
-  # Vérifier les logs pour identifier l'erreur
+  # Check logs to identify the error
   docker-compose logs -f
   
-  # Exécuter les commandes manuellement si nécessaire
+  # Execute commands manually if necessary
   docker-compose exec app composer install
   docker-compose exec app npm install
   docker-compose exec app npm run build
@@ -88,43 +88,43 @@ Un gestionnaire de fichiers sécurisé permettant aux utilisateurs authentifiés
   docker-compose exec app chmod -R 777 storage bootstrap/cache
   ```
   
-- **Pour redémarrer complètement l'application**:
+- **To completely restart the application**:
   ```bash
   docker-compose down
   docker-compose up -d
   ```
 
-## 🏗 Choix d'architecture
+## 🏗 Architecture Choices
 
-### Architecture Backend (Laravel)
+### Backend Architecture (Laravel)
 
-- **Laravel 9 avec PHP 8.1** : Framework moderne, sécurisé et performant
-- **Architecture MVC** : Séparation claire des responsabilités
-- **Middleware d'authentification** : Protection des routes et isolation des données par utilisateur
-- **Eloquent ORM** : Interactions sécurisées avec la base de données
-- **Storage API** : Gestion optimisée des fichiers avec isolation par utilisateur
+- **Laravel 9 with PHP 8.1**: Modern, secure, and high-performance framework
+- **MVC Architecture**: Clear separation of responsibilities
+- **Authentication Middleware**: Route protection and user data isolation
+- **Eloquent ORM**: Secure database interactions
+- **Storage API**: Optimized file management with user isolation
 
-### Architecture Frontend
+### Frontend Architecture
 
-- **Vue.js 3** : Framework réactif pour une interface utilisateur fluide
-- **Inertia.js** : Communication transparente entre Laravel et Vue sans API séparée
-- **Tailwind CSS** : Design responsive et moderne
-- **Compilation Vite** : Performances optimales en production
+- **Vue.js 3**: Reactive framework for a fluid user interface
+- **Inertia.js**: Seamless communication between Laravel and Vue without a separate API
+- **Tailwind CSS**: Responsive and modern design
+- **Vite Compilation**: Optimal performance in production
 
-### Conteneurisation
+### Containerization
 
-- **Docker multi-conteneurs** : Séparation des services (application, base de données)
-- **Configuration automatisée** : Installation et configuration simplifiées
-- **Environnement isolé** : Garantit un fonctionnement identique sur toutes les machines
-- **Volumes persistants** : Conservation des données entre les redémarrages
+- **Multi-container Docker**: Separation of services (application, database)
+- **Automated Configuration**: Simplified installation and configuration
+- **Isolated Environment**: Ensures identical operation across all machines
+- **Persistent Volumes**: Data preservation between restarts
 
-### Sécurité
+### Security
 
-- **Authentification robuste** : Protection contre les attaques par force brute
-- **Validation stricte** : Vérification des types et tailles de fichiers
-- **Isolation des données** : Chaque utilisateur n'accède qu'à ses propres fichiers
-- **Protection CSRF** : Sécurité des formulaires et requêtes
+- **Robust Authentication**: Protection against brute force attacks
+- **Strict Validation**: Verification of file types and sizes
+- **Data Isolation**: Each user only accesses their own files
+- **CSRF Protection**: Form and request security
 
-## 📄 Licence
+## 📄 License
 
-Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.
+This project is licensed under the MIT License. See the LICENSE file for more details.
