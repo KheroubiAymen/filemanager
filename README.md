@@ -30,7 +30,7 @@ Un gestionnaire de fichiers sécurisé permettant aux utilisateurs authentifiés
 
 2. **Configurez le fichier d'environnement**
    ```bash
-   # Copiez le fichier de exemple
+   # Copiez le fichier d'exemple
    cp .env.example .env
    
    # Modifiez les paramètres si nécessaire, notamment:
@@ -49,8 +49,16 @@ Un gestionnaire de fichiers sécurisé permettant aux utilisateurs authentifiés
    ```bash
    docker-compose logs -f
    ```
-   Attendez jusqu'à voir "Application prête!" ou similaire dans les logs.
-   La compilation des assets npm (`npm run build`) s'exécute automatiquement.
+   Le conteneur exécute de nombreuses tâches d'initialisation:
+   - Installation des dépendances PHP (Composer)
+   - Installation des dépendances JavaScript (npm)
+   - Compilation des assets (npm run build)
+   - Création du lien symbolique pour le stockage
+   - Génération de la clé d'application
+   - Exécution des migrations de base de données
+   - Mise en cache de la configuration et des routes
+   
+   Attendez de voir "Apache/2.4.x (Debian) PHP/8.1.x configured -- resuming normal operations" dans les logs, ce qui indique que l'application est prête.
 
 5. **Accédez à l'application**
    ```
@@ -66,9 +74,24 @@ Un gestionnaire de fichiers sécurisé permettant aux utilisateurs authentifiés
     - "8081:80"  # Changez 8080 pour un autre port disponible
   ```
 
-- **En cas d'erreur de compilation**, vous pouvez exécuter manuellement:
+- **Si l'initialisation échoue**, vous pouvez exécuter les commandes manuellement:
   ```bash
+  # Vérifier les logs pour identifier l'erreur
+  docker-compose logs -f
+  
+  # Exécuter les commandes manuellement si nécessaire
+  docker-compose exec app composer install
+  docker-compose exec app npm install
   docker-compose exec app npm run build
+  docker-compose exec app php artisan storage:link
+  docker-compose exec app php artisan migrate --force
+  docker-compose exec app chmod -R 777 storage bootstrap/cache
+  ```
+  
+- **Pour redémarrer complètement l'application**:
+  ```bash
+  docker-compose down
+  docker-compose up -d
   ```
 
 ## 🏗 Choix d'architecture
