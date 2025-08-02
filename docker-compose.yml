@@ -4,18 +4,17 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
-    volumes:
-      - ./:/var/www/html
+      - "80:80" 
     environment:
-      - APP_ENV=production
-      - APP_DEBUG=false
       - DB_CONNECTION=mysql
       - DB_HOST=db
       - DB_PORT=3306
       - DB_DATABASE=filemanager
       - DB_USERNAME=filemanager
       - DB_PASSWORD=filemanager
+    volumes:
+      - ./:/var/www/html:cached
+      - exclude-storage-link:/var/www/html/public/storage
     depends_on:
       - db
 
@@ -31,4 +30,4 @@ services:
 
 volumes:
   db-data:
-    driver: local
+  exclude-storage-link:
