@@ -120,7 +120,6 @@ A secure file manager allowing authenticated users to manage their own files thr
 
 ### Security
 
-- **Robust Authentication**: Protection against brute force attacks
 - **Strict Validation**: Verification of file types and sizes
 - **Data Isolation**: Each user only accesses their own files
 - **CSRF Protection**: Form and request security
